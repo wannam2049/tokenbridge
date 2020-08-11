@@ -539,7 +539,7 @@
                             <button id="logIn" type="button" class="btn btn-primary badge-pill">
                                 Connect wallet
                             </button>
-                            <a id="help" target="_blank" href="https://gitter.im/rsksmart/tokenbridge#" style="display: none;">
+                            <a id="help" target="_blank" href="https://gitter.im/rsksmart/tokenbridge" style="display: none;">
                                 Do you need help?
                             </a>
                         </div>
@@ -582,7 +582,7 @@
                             <div class="col-4 col-md-3 text-center">
                                 <label class="amount-label" for="amount"><a id="max" class="max">Max</a></label>
                                 <div class="form-group amount">
-                                    <input name="amount" id="amount" type="number" min="0" step="any" class="outline form-control text-center align-center" placeholder="Amount" required>
+                                    <input name="amount" id="amount" min="0" step="any" class="outline form-control text-center align-center" placeholder="Amount" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
@@ -720,7 +720,7 @@
                                 <span class="config-value mb-2" id="config-federators-count">-</span>
                                 <span class="config-address mb-2 ml-2" id="config-federators-required"></span>
                             </div>
-                            <span class="config-title">Federators</span>
+                            <span class="config-title">Validators</span>
                             <p>
                                 The Authorities will vote the transactions to cross during the trial period. Once we implement the decentralized bridge there will be no authorities as its a fully trustless solution
                             </p>
@@ -765,7 +765,7 @@
                      <div class="row">
                         <div class="col-sm-7">
                            <div class="footer-info">
-                              <p>Rsk is the most secure smart contract network in the world and enables decentralized applications secured by the Bitcoin Network to empower people and improve the quality of life of millions.</p>
+                              <p>Rsk is the most secure smart contract<span class="falsebreak"><br></span> network in the world and enables<span class="falsebreak"><br></span> decentralized applications secured by the<span class="falsebreak"><br></span> Bitcoin Network to empower people and<span class="falsebreak"><br></span> improve the quality of life of millions.</p>
                               <br/>
                               <a href="https://developers.rsk.co/" rel="nofollow noopener noreferrer" target="_blank" class="footer-button rounded" title="Start now">Start now</a>
                            </div>
@@ -804,7 +804,7 @@
                         <a href="https://twitter.com/rsksmart" rel="nofollow noopener noreferrer" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
                         <a href="https://www.youtube.com/rsksmart" rel="nofollow noopener noreferrer" target="_blank" class="facebook"><i class="fab fa-youtube"></i></a>
                         <a href=" https://www.facebook.com/RSKsmart/" rel="nofollow noopener noreferrer" target="_blank" class="linkedin"><i class="fab fa-facebook"></i></a>
-                        <a href="https://gitter.im/rsksmart" rel="nofollow noopener noreferrer" target="_blank" class="instagram"><i class="fab fa-gitter"></i></a>
+                        <a href="https://gitter.im/rsksmart/tokenbridge" rel="nofollow noopener noreferrer" target="_blank" class="instagram"><i class="fab fa-gitter"></i></a>
                         <a href="https://www.reddit.com/r/rootstock/" rel="nofollow noopener noreferrer" target="_blank" class="instagram"><i class="fab fa-reddit"></i></a>
                         <a href="https://t.me/rskofficialcommunity" rel="nofollow noopener noreferrer" target="_blank" class="instagram"><i class="fab fa-telegram"></i></a>
                         <a href="https://medium.com/@RSKNews" rel="nofollow noopener noreferrer" target="_blank" class="instagram"><i class="fab fa-medium"></i></a>
@@ -980,7 +980,7 @@
                     });
                     $('#amount').keyup(isAmountOk);
                     $('#amount').keypress(function(event) {
-                        if(event.key === ',') 
+                        if(event.key !== '.' && !isFinite(event.key)) 
                             return false;
                     });
                     $('#crossForm').on('submit', function(e) {
@@ -1073,6 +1073,7 @@
                 // function iconFail(currentStep, html ='') {
                 //     stepIcon(currentStep, `<i class="fas fa-times text-danger"></i> ${html}`);
                 // }
+
                 async function getMaxBalance(event) {
                     if(event)
                         event.preventDefault();
@@ -1143,7 +1144,7 @@
                     .then(async (balance) => {
                         const balanceBN = new BigNumber(balance);
                         if(balanceBN.isLessThan(amountBN)) {
-                            throw new Error(`Insuficient balance in your account, your current balance is ${balanceBN.shiftedBy(-decimals)} ${token[config.networkId].symbol}`);
+                            throw new Error(`Insufficient Balance in your account, your current balance is ${balanceBN.shiftedBy(-decimals)} ${token[config.networkId].symbol}`);
                         }
                         let maxWithdrawInWei = await retry3Times(bridgeContract.methods.calcMaxWithdraw().call);
                         let maxWithdraw = BigNumber(web3.utils.fromWei(maxWithdrawInWei, 'ether'));
@@ -1604,12 +1605,12 @@
                 };
 
                 const USDT_TOKEN = { token: 'USDT', name: 'Tether USD', icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
-                    31:{symbol:'rUSDT', address:'0xcdc8ccbbfb6407c53118fe47259e8d00c81f42cd', decimals:18},
+                    31:{symbol:'rKovUSDT', address:'0xcdc8ccbbfb6407c53118fe47259e8d00c81f42cd', decimals:18},
                     42:{symbol:'USDT', address:'0x13512979ade267ab5100878e2e0f485b568328a4', decimals:6},
                 };
 
                 const USDC_TOKEN = { token: 'USDC', name: 'USD Coin', icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
-                    31:{symbol:'rUSDC', address:'0x6117c9529f15c52e2d3188d5285c745b757b5825', decimals:18},
+                    31:{symbol:'rKovUSDC', address:'0x6117c9529f15c52e2d3188d5285c745b757b5825', decimals:18},
                     42:{symbol:'USDC', address:'0xe22da380ee6b445bb8273c81944adeb6e8450422', decimals:6},
                 };
 
